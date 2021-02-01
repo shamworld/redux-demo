@@ -1,0 +1,68 @@
+<!--
+ * @message: 描述
+ * @Author: Roy
+ * @Email: @163.com
+ * @Github: @163.com
+ * @Date: 2021-02-01 20:18:34
+ * @LastEditors: Roy
+ * @LastEditTime: 2021-02-02 01:42:22
+ * @Deprecated: 否
+ * @FilePath: /redux/demo4/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redux</title>
+</head>
+<body>
+    <script type="module">
+        import {createStore,combineReducers,applyMiddleware} from './redux/index.js'
+        import counterReducer from './reducers/counter.js'
+        import infoReducer from './reducers/info.js'
+        import exceptionMiddleware from './middlewares/exceptionMiddleware.js'
+        import loggerMiddleware from './middlewares/loggerMiddleware.js'
+        import timeMiddleware from './middlewares/timeMiddleware.js'
+
+        const reducer = combineReducers({
+            counter:counterReducer,
+            info:infoReducer
+        });
+        
+        let initState = {
+            counter:{
+                count:0,
+            },
+            info:{
+                name:'',
+                description:'',
+            }
+        };
+        //初始化中间件
+        const rewriteCreateStroeFunc = applyMiddleware(
+            exceptionMiddleware,
+            loggerMiddleware,
+            timeMiddleware
+        )
+        let store = createStore(reducer,{},rewriteCreateStroeFunc);
+        
+
+        store.subscribe(()=>{
+            const state = store.getState();
+            console.log(state);
+            console.log(state.counter.count);
+            console.log(state.info.name);
+        });
+
+        store.dispatch({
+            type: 'INCREMENT',
+        });
+        store.dispatch({
+            type: 'SET_NAME',
+            name:'贪吃的猫cx'
+        });
+
+    </script>
+</body>
+</html>

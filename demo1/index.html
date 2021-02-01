@@ -1,0 +1,51 @@
+<!--
+ * @message: 描述
+ * @Author: Roy
+ * @Email: @163.com
+ * @Github: @163.com
+ * @Date: 2021-02-01 20:18:34
+ * @LastEditors: Roy
+ * @LastEditTime: 2021-02-01 20:40:29
+ * @Deprecated: 否
+ * @FilePath: /redux/demo1/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redux</title>
+</head>
+<body>
+    <script type="module">
+        import {createStore} from './redux/index.js'
+        let initState = {
+            counter:{
+                count:0,
+            },
+            info:{
+                name:'',
+                description:'',
+            }
+        };
+        let store = createStore(initState);
+        store.subscribe(()=>{
+            const state = store.getState();
+            console.log(`${state.info.name}----${state.info.description}`);
+        });
+
+        store.subscribe(()=>{
+            const state = store.getState();
+            console.log(`${state.counter.count}`);
+        });
+
+        store.dispatch({...store.getState(),
+            info:{
+                name:'Roy',
+                description:'贪吃的猫',
+            }
+        });
+
+    </script>
+</body>
+</html>
